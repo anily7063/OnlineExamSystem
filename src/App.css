@@ -90,7 +90,7 @@ justify-content: center;
 } */
 
 .info_box {
-  padding: 70px;
+  padding: 60px;
   border: black;
   text-align: center;
   align-self: center;
@@ -106,8 +106,9 @@ justify-content: center;
 }
 
 .info-title {
- 
   text-align: center;
+  text-decoration: underline;
+  font-size: 20px;
 }
 
 .btn {
@@ -165,4 +166,12 @@ input.success {
 
 h2 {
   padding: 30px;
+}
+
+.info {
+  width: 400px;
+  text-align: center;
+  align-items: center;
+  align-content: center;
+  display: inline-flex;
 }

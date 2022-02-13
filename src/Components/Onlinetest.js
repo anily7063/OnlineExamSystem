@@ -156,7 +156,7 @@ export default function Onlinetest(){
            duration={1300}
          />
     <div className='que'>
-        <span>Question {currentQuestion + 1} of &nbsp;</span>{questions.length}
+        <span>Question {count + 1} of &nbsp;</span>{questions.length}
     </div>
    
 </div>
