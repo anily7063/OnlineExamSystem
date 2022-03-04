@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from './Header';
 import Score from './Score';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Timer from './Timer';
 import { useNavigate } from 'react-router-dom';
 import { questions } from './questions';
 import { useDispatch } from "react-redux";
-import userSlice, { answerOptions, selectUser } from '../features/userSlice';
+import userSlice, { answerOptions, selectUser,selectUserCheck,ansCheckbox } from '../features/userSlice';
 import { useSelector } from 'react-redux';
 
 export default function Onlinetest(){
@@ -14,7 +14,7 @@ export default function Onlinetest(){
   const [disabled, setDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [anss, setAnss] = useState([]);
-  const [theArray, setTheArray] = useState();
+  const [anss1, setAnss1] = useState([]);
   const [check, setCheck] = useState(false);
   
   const [nxtFin, setNxtFin] = useState(false);
@@ -26,12 +26,17 @@ export default function Onlinetest(){
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [indexVal, setindexVal] = useState(false);
+  const [multiple, setMultiple] = useState({});
+  const [arr, setArr] = useState([]);
   // const [checks, setChecks] = useState(false);
    
     const [currentQuestion, setCurrentQuestion] = useState(0)  
     const [currentAnswers, setCurrentAnswers] = useState(0)
     const userAns= useSelector(selectUser);
-    
+    const useRedux = useSelector(selectUserCheck);
+    const corrAns = useRedux.checkBox;
+
+
     const prevQuestion = (e) => {
       e.preventDefault();
       setCount(count - 1);
@@ -48,15 +53,17 @@ export default function Onlinetest(){
 
       
         let unCheck = document.querySelectorAll("input");
-        for( let i=0;i<unCheck.length;i ++){
-          unCheck[i].checked = false;
-        }
+        
         setTimeout(() => {
           for (let i = 0; i < unCheck.length; i++) {
-            if (userAns.answer[count - 1] === unCheck[i].value) {
-              unCheck[i].checked = true;
-            } else {
-              unCheck[i].checked = false;
+            console.log(corrAns[count - 1][i], unCheck[i].value);
+            if (corrAns !== []) {
+              if (corrAns[count - 1].includes(unCheck[i].value)) {
+                unCheck[i].checked = true;
+                console.log("checked");
+              } else {
+                unCheck[i].checked = false;
+              }
             }
           }
         },5);
@@ -66,6 +73,24 @@ export default function Onlinetest(){
     };
       const nextQuestion = (e) => {
         e.preventDefault();
+
+        let unCheck = document.querySelectorAll("input");
+        let sss = [];
+        for (let i = 0; i < unCheck.length; i++) {
+          if (unCheck[i].checked === true) {
+            // console.log(unCheck[i].value);
+            // setArr([...arr, unCheck[i].value]);
+            sss.push(unCheck[i].value);
+          }
+        }
+        setAnss1({ ...anss1, [count]: sss });
+        // console.log(anss1[count][0]);
+        setArr(sss);
+        console.log(anss1);
+
+
+
+
         setCount(count + 1);
         setDisabled(false);
         // if (unCheck.checked) {
@@ -79,28 +104,40 @@ export default function Onlinetest(){
        // let newArr1 = [...anss];
        // setTheArray(newArr1)
        //  console.log(newArr1)
-        let unCheck = document.querySelectorAll("input");
+       
        
         for( let i=0;i<unCheck.length;i ++){
           unCheck[i].checked = false;
         }
         setTimeout(() => {
           for (let i = 0; i < unCheck.length; i++) {
-            if (userAns.answer[count + 1] === unCheck[i].value) {
-              unCheck[i].checked = true;
-            } else {
-              unCheck[i].checked = false;
+            if (corrAns[count + 1]) {
+              if (corrAns[count + 1].includes(unCheck[i].value)) {
+                unCheck[i].checked = true;
+                console.log(corrAns[count + 1][i]);
+              } else {
+                unCheck[i].checked = false;
+              }
             }
           }
         });
 
+      };
+
+
+      useEffect(() => {
+        // setAnss1({ ...anss1, [count]: arr });
+        // console.log(anss1[count][0]);
+        // console.log(corrAns[count][0]);
+        // setAnss({ ...anss, [count]: multiple });
         dispatch(
-          answerOptions({
-            answer: anss,
+          ansCheckbox({
+            checkBox: anss1,
           })
         );
-      
-      };
+    
+        console.log(corrAns);
+      }, [multiple, anss1, corrAns, dispatch]);
     
      
         const [score, setScore] = useState(0)
@@ -122,7 +159,12 @@ export default function Onlinetest(){
             }
             dispatch(
               answerOptions({
-                answer: anss,
+                answer: anss1,
+              })
+            );
+            dispatch(
+              ansCheckbox({
+                checkBox: null,
               })
             );
             navigate("/Onlinetest/Score");
@@ -133,13 +175,21 @@ export default function Onlinetest(){
            //  console.log("ss", i);
             // console.log(...anss)
              //console.log([...anss, e.target.value])
-             const{name , value} = e.target;
-    setAnss({...anss, [name]:value});
+             let unCheck = document.querySelectorAll("input");
+             const { value } = e.target;
+             setMultiple({ ...multiple, [i]: value });
+             setAnss({ ...anss, [count]: value });
              //setTheArray(newArr)
             // console.log(prevArray => [ {qn1:([...anss])} ])
             let ind = i;
-            // console.log(ind);
-            setindexVal(ind);
+    setindexVal(ind);
+    for (let i = 0; i < unCheck.length; i++) {
+      if (unCheck[i].checked !== true) {
+        unCheck[i].checked = false;
+      } else {
+        unCheck[i].checked = true;
+      }
+    }
           };
 
   return(
@@ -214,7 +264,7 @@ export default function Onlinetest(){
           </div>
           </div>
       )}  
-      {check && <Score correctAns={anss} />}
+      {check && <Score correctAns={anss1} />}
 </div>
   )
 }

@@ -175,3 +175,28 @@ h2 {
   align-content: center;
   display: inline-flex;
 }
+
+@media (max-width:500px){
+  .info {
+    width: 90%;
+  }
+  .info-title {
+    width: 100%;
+  }
+  .info_box {
+    width: 70%;
+    height: fit-content;
+   
+  }
+  .info-list {
+    width: 100%;
+  }
+
+}
+@media (max-width:500px){
+ .result{
+   height: 400px;
+   width: fit-content;
+ }
+
+}

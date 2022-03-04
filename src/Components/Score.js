@@ -4,20 +4,26 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../features/userSlice';
 
-export default function Score() {
-  const corr = questions.map(({ corrAns }) => corrAns);
+export default function Score({  correctAns, count }) {
+  
   const navigate = useNavigate();
-  const userAns= useSelector(selectUser);
-   // console.log(corr);
-  //   console.log(correctAns);
+ 
+  const corr = questions.map(({ corrAns }) => corrAns);
+
+   console.log(corr);
+    console.log(correctAns);
   //let exactAns = corr.filter((correctAnsss) =>
    // correctAns.includes(correctAnsss)
  // );
    
     let exactAns = [];
-    for (let i = 0; i < corr.length; i++) {
-      if (userAns.answer[i] === corr[i]) {
-        exactAns =  [...exactAns,userAns.answer[i]];
+    for (let i = 0; i < corr.length - 1; i++) {
+      const equals = (correctAns, corr) =>
+        JSON.stringify(correctAns) === JSON.stringify(corr);
+  
+      if (equals(correctAns[i], corr[i])) {
+        console.log(correctAns[i]);
+        exactAns = [...exactAns, correctAns[i]];
       }
     }
     console.log(exactAns);

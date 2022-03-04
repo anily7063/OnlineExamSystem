@@ -6,7 +6,7 @@ export const questions = [
     answerOptions: [
       'JavaScript library' ,'Bootstrap library',' CSS library','None of the Above'
     ],
-    corrAns: "None of the Above",
+    corrAns: ["JavaScript library","Bootstrap library"],
   },
 
 
@@ -18,7 +18,7 @@ export const questions = [
   'June 29 2013 ',
   ' May 29 2014' 
     ],
-    corrAns: "May 29 2013",
+    corrAns: ["May 29 2013"],
   },
 {
     id:3,
@@ -29,7 +29,7 @@ export const questions = [
   ' Java',
   'Php' 
     ],
-    corrAns: "JavaScript",
+    corrAns: ["JavaScript"],
   },
 {
     id:4,
@@ -40,6 +40,6 @@ export const questions = [
   ' Both Original & Virtual DOM ',
   'one of the Above' 
     ],
-    corrAns: "Virtual DOM",
+    corrAns: ["Virtual DOM"],
   }
 ];
